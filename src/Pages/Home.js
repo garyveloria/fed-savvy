@@ -66,47 +66,16 @@ function Home() {
     }
   };
 
-  // const handleFilterClick = () => {
-  //   handleFilterButtonClick(
-  //     launches,
-  //     launchpads,
-  //     keyword,
-  //     setFilteredLaunches,
-  //     setFilteredLaunchpads,
-  //   );
-  // };
-
   const handleSearch = () => {
-      searchLaunches(keyword, launches, launchpads, setNumItems, setFilteredLaunches, setFilteredLaunchpads);
+    searchLaunches(
+      keyword,
+      launches,
+      launchpads,
+      setNumItems,
+      setFilteredLaunches,
+      setFilteredLaunchpads
+    );
   };
-
-  // const searchLaunches = async (keyword, launchId, minYear, maxYear) => {
-  //   try {
-  //     const launchesData = await fetchLaunches();
-      
-  //     const filteredLaunches = launchesData.filter((launch) => {
-  //       const { flight_number, rocket, payloads, date_utc } = launch;
-  //       const { rocket_name } = rocket;
-  //       const payloadIds = payloads.map((payload) => payload.payload_id);
-  
-  //       return (
-  //         (flight_number.toString().includes(keyword) ||
-  //         rocket_name.toLowerCase().includes(keyword.toLowerCase()) ||
-  //         payloadIds.some((payloadId) =>
-  //           payloadId.toLowerCase().includes(keyword.toLowerCase()))) &&
-  //         (!launchId || flight_number.toString() === launchId) &&
-  //         (!minYear || parseInt(date_utc.substring(0, 4)) >= parseInt(minYear)) &&
-  //         (!maxYear || parseInt(date_utc.substring(0, 4)) <= parseInt(maxYear))
-  //       );
-  //     });
-  
-  //     return filteredLaunches;
-  //   } catch (error) {
-  //     console.error("Error searching launches:", error);
-  //     throw error;
-  //   }
-  // };
-
 
   return (
     <>
@@ -123,7 +92,7 @@ function Home() {
               <Input
                 type="text"
                 placeholder="eg. Merlin"
-                value={ keyword }
+                value={keyword}
                 onChange={(event) => setKeyword(event.target.value)}
                 autoComplete="off"
               />
@@ -136,14 +105,19 @@ function Home() {
               <div>
                 <p>Showing {numItems} Mission</p>
                 <ul>
-                  <GetLaunches launches={filteredLaunches} launchpads={filteredLaunchpads} />
+                  <GetLaunches
+                    launches={filteredLaunches}
+                    launchpads={filteredLaunchpads}
+                  />
                 </ul>
               </div>
             )}
           </MainResultContainer>
           <FooterContainer>
             <FooterText>{savvyStrings.footerText}</FooterText>
-            <BacktoTop onClick={scrollToTop}>{savvyStrings.backToTopText}</BacktoTop>
+            <BacktoTop onClick={scrollToTop}>
+              {savvyStrings.backToTopText}
+            </BacktoTop>
           </FooterContainer>
         </MissionContainer>
       </MainContainer>
