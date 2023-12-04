@@ -1,5 +1,4 @@
 import React from "react";
-import Icon from "../Components/LaunchIcons";
 
 import {
   FlightNumContainer,
@@ -9,15 +8,16 @@ import {
   ButtonsContainer,
   ResultContainer,
   ResultInfoContainer,
+  MissionPatchImage
 } from "../Style/MainStyle.js";
 
-// const LaunchIcons = ({ launch }) => {
-//   let icon = (
-//     <MissionPatchImage src={launch.links.mission_patch} alt="Mission Patch" />
-//   );
+const LaunchIcons = ({ launch }) => {
+  let icon = (
+    <MissionPatchImage src={launch.links.mission_patch} alt="Mission Patch" />
+  );
 
-//   return icon;
-// };
+  return icon;
+};
 
 const LaunchFlightNumber = ({ launch }) => {
   const { flight_number } = launch;
@@ -162,7 +162,7 @@ const LaunchButtons = ({ launch }) => {
 export const GetLaunches = ({ launches, launchpads }) => {
   return launches.map((launch) => (
     <ResultContainer key={launch.flight_number}>
-      {<Icon launch={launch} />}
+      {<LaunchIcons launch={launch} />}
 
       <ResultInfoContainer>
         {<LaunchTitle launch={launch} />}

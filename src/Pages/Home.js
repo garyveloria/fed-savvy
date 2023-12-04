@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { fetchLaunches, fetchLaunchPads } from "../Components/FetchApiData";
 import { GetLaunches } from "../Components/RenderApiData";
 import { savvyStrings } from "../Components/Variables";
+import { searchLaunches } from "../Components/FilterEvent";
 import {
   MainContainer,
   HeroBackgroundImage,
@@ -26,6 +27,11 @@ function Home() {
 
   // ---- Store Search Filter ---- //
   const [keyword, setKeyword] = useState("");
+  // const [launchpadId, setLaunchpadId] = useState('Any');
+  const [filteredLaunches, setFilteredLaunches] = useState([]);
+  const [filteredLaunchpads, setFilteredLaunchpads] = useState([]);
+
+  const [numItems, setNumItems] = useState(0);
 
   const [loading, setLoading] = useState(true);
 
@@ -60,31 +66,47 @@ function Home() {
     }
   };
 
-  const handleSearch = async () => {
-    try {
-      setLoading(true);
-      const filteredLaunches = await searchLaunches(keyword);
-      setLaunches(filteredLaunches);
-      setLoading(false);
-    } catch (error) {
-      setLoading(false);
-    }
+  // const handleFilterClick = () => {
+  //   handleFilterButtonClick(
+  //     launches,
+  //     launchpads,
+  //     keyword,
+  //     setFilteredLaunches,
+  //     setFilteredLaunchpads,
+  //   );
+  // };
+
+  const handleSearch = () => {
+      searchLaunches(keyword, launches, launchpads, setNumItems, setFilteredLaunches, setFilteredLaunchpads);
   };
 
-  const searchLaunches = async (keyword) => {
-    try {
-      const launchesData = await fetchLaunches();
-      const filteredLaunches = launchesData.filter((launch) =>
-        launch.core_serial.toLowerCase().includes(keyword.toLowerCase())
-      );
-      return filteredLaunches;
-    } catch (error) {
-      console.error("Error searching launches:", error);
-      throw error;
-    }
-  };
+  // const searchLaunches = async (keyword, launchId, minYear, maxYear) => {
+  //   try {
+  //     const launchesData = await fetchLaunches();
+      
+  //     const filteredLaunches = launchesData.filter((launch) => {
+  //       const { flight_number, rocket, payloads, date_utc } = launch;
+  //       const { rocket_name } = rocket;
+  //       const payloadIds = payloads.map((payload) => payload.payload_id);
+  
+  //       return (
+  //         (flight_number.toString().includes(keyword) ||
+  //         rocket_name.toLowerCase().includes(keyword.toLowerCase()) ||
+  //         payloadIds.some((payloadId) =>
+  //           payloadId.toLowerCase().includes(keyword.toLowerCase()))) &&
+  //         (!launchId || flight_number.toString() === launchId) &&
+  //         (!minYear || parseInt(date_utc.substring(0, 4)) >= parseInt(minYear)) &&
+  //         (!maxYear || parseInt(date_utc.substring(0, 4)) <= parseInt(maxYear))
+  //       );
+  //     });
+  
+  //     return filteredLaunches;
+  //   } catch (error) {
+  //     console.error("Error searching launches:", error);
+  //     throw error;
+  //   }
+  // };
 
-  const totalListsRendered = launches.length;
 
   return (
     <>
@@ -101,7 +123,7 @@ function Home() {
               <Input
                 type="text"
                 placeholder="eg. Merlin"
-                value={keyword}
+                value={ keyword }
                 onChange={(event) => setKeyword(event.target.value)}
                 autoComplete="off"
               />
@@ -112,9 +134,9 @@ function Home() {
             {loading && <p>Loading Missions...</p>}
             {!loading && (
               <div>
-                <p>Showing {totalListsRendered} Mission</p>
+                <p>Showing {numItems} Mission</p>
                 <ul>
-                  <GetLaunches launches={launches} launchpads={launchpads} />
+                  <GetLaunches launches={filteredLaunches} launchpads={filteredLaunchpads} />
                 </ul>
               </div>
             )}
