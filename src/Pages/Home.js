@@ -132,7 +132,7 @@ function Home() {
               <div>
                 <p>Showing {filteredItemCount} Missions</p>
                 <ul>
-                {
+                  {
                     <GetLaunches
                       launches={filteredLaunches}
                       launchpads={filteredLaunchpads}

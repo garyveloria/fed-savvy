@@ -12,6 +12,7 @@ export const searchLaunches = (
   let filteredLaunches = launches;
   let filteredLaunchpads = launchpads;
 
+  // Filter using Keyword
   if (keyword) {
         filteredLaunches = filteredLaunches.filter((launch) => {
             const { flight_number, rocket, payloads } = launch;
