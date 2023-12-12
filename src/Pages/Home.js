@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { fetchLaunches, fetchLaunchPads } from "../Components/FetchApiData";
 import { GetLaunches } from "../Components/RenderApiData";
 import { savvyStrings } from "../Components/Variables";
-import { searchLaunches } from "../Components/FilterEvent";
+import { searchLaunches, getLaunchpadByName } from "../Components/FilterEvent";
 import {
   MainContainer,
   HeroBackgroundImage,
@@ -17,21 +17,25 @@ import {
   SearchButton,
   SearchBar,
   Input,
+  Select,
   MainResultContainer,
 } from "../Style/MainStyle.js";
 
 function Home() {
-  // ---- Store Data ---- //
+  // All Data
   const [launches, setLaunches] = useState([]);
   const [launchpads, setLaunchpads] = useState([]);
 
-  // ---- Store Search Filter ---- //
+  // Search Filtered
   const [keyword, setKeyword] = useState("");
-  // const [launchpadId, setLaunchpadId] = useState('Any');
+  const [launchpadId, setLaunchpadId] = useState("Any");
+
+  // Filtered Data
   const [filteredLaunches, setFilteredLaunches] = useState([]);
   const [filteredLaunchpads, setFilteredLaunchpads] = useState([]);
 
-  const [numItems, setNumItems] = useState(0);
+  // Filtered Data Count
+  const [filteredItemCount, setFilteredItemCount] = useState(0);
 
   const [loading, setLoading] = useState(true);
 
@@ -68,12 +72,13 @@ function Home() {
 
   const handleSearch = () => {
     searchLaunches(
-      keyword,
       launches,
       launchpads,
-      setNumItems,
+      keyword,
+      launchpadId,
       setFilteredLaunches,
-      setFilteredLaunchpads
+      setFilteredLaunchpads,
+      setFilteredItemCount
     );
   };
 
@@ -88,14 +93,36 @@ function Home() {
         <MissionContainer ref={missionContainer}>
           <SearchContainer>
             <SearchBar className="keyword">
-              <label htmlFor="keyword">Seach via Core Serial</label>
+              <label htmlFor="keyword">keyword</label>
               <Input
                 type="text"
-                placeholder="eg. Merlin"
+                placeholder="eg. Falcon"
                 value={keyword}
-                onChange={(event) => setKeyword(event.target.value)}
+                onChange={(event) => setKeyword(event.target.value)} // inline function (set current value of inputs)
                 autoComplete="off"
               />
+            </SearchBar>
+            <SearchBar className="launchpad">
+              <label htmlFor="launchpad">Launchpad</label>
+              <Select
+                id="launchpads"
+                value={launchpadId}
+                onChange={(event) => setLaunchpadId(event.target.value)}
+              >
+                {getLaunchpadByName(launchpads)}
+              </Select>
+            </SearchBar>
+            <SearchBar className="minYear">
+              <label htmlFor="min-year">Min Year</label>
+              <Select id="min-year">
+                <option value="Any">Any</option>
+              </Select>
+            </SearchBar>
+            <SearchBar className="maxYear">
+              <label htmlFor="max-year">Max Year</label>
+              <Select id="max-year">
+                <option value="Any">Any</option>
+              </Select>
             </SearchBar>
             <SearchButton onClick={handleSearch}>Apply</SearchButton>
           </SearchContainer>
@@ -103,12 +130,14 @@ function Home() {
             {loading && <p>Loading Missions...</p>}
             {!loading && (
               <div>
-                <p>Showing {numItems} Mission</p>
+                <p>Showing {filteredItemCount} Missions</p>
                 <ul>
-                  <GetLaunches
-                    launches={filteredLaunches}
-                    launchpads={filteredLaunchpads}
-                  />
+                {
+                    <GetLaunches
+                      launches={filteredLaunches}
+                      launchpads={filteredLaunchpads}
+                    />
+                  }
                 </ul>
               </div>
             )}

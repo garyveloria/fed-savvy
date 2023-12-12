@@ -1,5 +1,4 @@
 import React from "react";
-
 import {
   FlightNumContainer,
   TitleContainer,
@@ -8,9 +7,10 @@ import {
   ButtonsContainer,
   ResultContainer,
   ResultInfoContainer,
-  MissionPatchImage
+  MissionPatchImage,
 } from "../Style/MainStyle.js";
 
+// Icon Rendering
 const LaunchIcons = ({ launch }) => {
   let icon = (
     <MissionPatchImage src={launch.links.mission_patch} alt="Mission Patch" />
@@ -19,6 +19,7 @@ const LaunchIcons = ({ launch }) => {
   return icon;
 };
 
+// Flight Number Rendering
 const LaunchFlightNumber = ({ launch }) => {
   const { flight_number } = launch;
 
@@ -32,16 +33,15 @@ const LaunchFlightNumber = ({ launch }) => {
   return flightNumber;
 };
 
+// Title Rendering
 const LaunchTitle = ({ launch }) => {
-// The code uses destructuring assignment to extract specific properties from the launch prop.
+  // The code uses destructuring assignment to extract specific properties from the launch prop.
   const { rocket, payloads, launch_success, land_success } = launch;
   const { rocket_name } = rocket;
 
-// This line uses the map function to create an array of payload IDs by extracting the payload_id property from each item in the payloads array.
+  // This line uses the map function to create an array of payload IDs by extracting the payload_id property from each item in the payloads array.
   const payloadIds = payloads.map((payload) => payload.payload_id);
 
-
-// Title Rendering
   let title = (
     <TitleContainer>
       <span>
@@ -58,6 +58,7 @@ const LaunchTitle = ({ launch }) => {
   return title;
 };
 
+// Subtitle Rendering
 const LaunchSubtitle = ({ launch, launchpads }) => {
   const { launch_date_local, launch_site } = launch;
   const { site_id } = launch_site;
@@ -105,6 +106,7 @@ const LaunchSubtitle = ({ launch, launchpads }) => {
   }
 };
 
+// Launch Button Rendering
 const LaunchButtons = ({ launch }) => {
   const {
     links: {

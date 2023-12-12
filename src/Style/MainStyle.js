@@ -114,14 +114,14 @@ export const SearchContainer = styled.div`
   padding: 50px 50px 50px 30px;
   border-bottom: 0.5px solid #dddddd;
 
-  .keyword {
+  .keyword, .launchpad, .minYear, .maxYear {
     width: 100%;
   }
 
   @media (min-width: 850px) {
     flex-direction: row;
 
-    .keyword {
+    .keyword, .launchpad, .minYear, .maxYear {
       width: 30vw;
     }
   }
@@ -144,6 +144,26 @@ export const Input = styled.input`
   padding: 12px 30px 15px 15px;
   font-size: 16px;
   text-align: left;
+`;
+
+export const Select = styled.select`
+  width: auto;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+
+  margin-top: 10px;
+  padding: 12px 30px 15px 15px;
+  font-family: 'Barlow', sans-serif;
+  font-size: 16px;
+  text-align: left;
+
+  appearance: none;
+  background-color: transparent;
+  background-image: url(${arrowDownImage});
+  background-repeat: no-repeat;
+  background-position: calc(100% - 10px);
+  background-size: 12px;
 `;
 
 export const MainResultContainer = styled.div`
