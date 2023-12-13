@@ -1,17 +1,17 @@
 {
   "files": {
     "main.css": "/fed-savvy/static/css/main.1bedc49d.css",
-    "main.js": "/fed-savvy/static/js/main.f466222b.js",
+    "main.js": "/fed-savvy/static/js/main.1929e7af.js",
     "static/js/787.28279cac.chunk.js": "/fed-savvy/static/js/787.28279cac.chunk.js",
     "static/media/space-photo.jpeg": "/fed-savvy/static/media/space-photo.856c75d31e8e53ac5a13.jpeg",
     "index.html": "/fed-savvy/index.html",
     "static/media/down-chevron.svg": "/fed-savvy/static/media/down-chevron.90e13f319e8573140a83f88fcc1edf42.svg",
     "main.1bedc49d.css.map": "/fed-savvy/static/css/main.1bedc49d.css.map",
-    "main.f466222b.js.map": "/fed-savvy/static/js/main.f466222b.js.map",
+    "main.1929e7af.js.map": "/fed-savvy/static/js/main.1929e7af.js.map",
     "787.28279cac.chunk.js.map": "/fed-savvy/static/js/787.28279cac.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.1bedc49d.css",
-    "static/js/main.f466222b.js"
+    "static/js/main.1929e7af.js"
   ]
 }
