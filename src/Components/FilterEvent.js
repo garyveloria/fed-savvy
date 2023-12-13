@@ -5,6 +5,8 @@ export const searchLaunches = (
   launchpads,
   keyword,
   launchpadId,
+  minYear,
+  maxYear,
   setFilteredLaunches,
   setFilteredLaunchpads,
   setFilteredItemCount
@@ -14,18 +16,20 @@ export const searchLaunches = (
 
   // Filter using Keyword
   if (keyword) {
-        filteredLaunches = filteredLaunches.filter((launch) => {
-            const { flight_number, rocket, payloads } = launch;
-            const { rocket_name } = rocket;
-            const payloadIds = payloads.map((payload) => payload.payload_id);
+    filteredLaunches = filteredLaunches.filter((launch) => {
+      const { flight_number, rocket, payloads } = launch;
+      const { rocket_name } = rocket;
+      const payloadIds = payloads.map((payload) => payload.payload_id);
 
-            return (
-                flight_number.toString().includes(keyword) ||
-                rocket_name.toLowerCase().includes(keyword.toLowerCase()) ||
-                payloadIds.some((payloadId) => payloadId.toLowerCase().includes(keyword.toLowerCase()))
-            );
-        });
-    }
+      return (
+        flight_number.toString().includes(keyword) ||
+        rocket_name.toLowerCase().includes(keyword.toLowerCase()) ||
+        payloadIds.some((payloadId) =>
+          payloadId.toLowerCase().includes(keyword.toLowerCase())
+        )
+      );
+    });
+  }
 
   // Filter using Launchpad
   if (launchpadId !== "Any") {
@@ -42,6 +46,40 @@ export const searchLaunches = (
     filteredLaunchpads = filteredLaunchpads.filter((launchpadItem) => {
       return launchpadItem.full_name === launchpadId;
     });
+  }
+
+  // Filter by minimum year
+  if (minYear !== "Any") {
+    const minYearTimestamp = new Date(`${minYear}-01-01`).getTime();
+
+    filteredLaunches = filteredLaunches.filter((launch) => {
+      const { launch_date_local } = launch;
+      const launchTimestamp = new Date(launch_date_local).getTime();
+
+      return launchTimestamp >= minYearTimestamp;
+    });
+  }
+
+  // Filter by maximum year
+  if (maxYear !== "Any") {
+    const maxYearTimestamp = new Date(`${maxYear}-12-31`).getTime();
+
+    filteredLaunches = filteredLaunches.filter((launch) => {
+      const { launch_date_local } = launch;
+      const launchTimestamp = new Date(launch_date_local).getTime();
+
+      return launchTimestamp <= maxYearTimestamp;
+    });
+
+    // For invalid range
+    if (
+      minYear !== "Any" &&
+      maxYear !== "Any" &&
+      parseInt(minYear) > parseInt(maxYear)
+    ) {
+      alert("Selected year range is invalid.");
+      return;
+    }
   }
 
   setFilteredLaunches(filteredLaunches);

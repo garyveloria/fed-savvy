@@ -114,7 +114,7 @@ export const SearchContainer = styled.div`
   padding: 50px 50px 50px 30px;
   border-bottom: 0.5px solid #dddddd;
 
-  .keyword, .launchpad, .minYear, .maxYear {
+  .keyword, .launchpad, .minyear, .maxyear {
     width: 100%;
   }
 

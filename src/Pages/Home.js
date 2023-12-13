@@ -29,12 +29,18 @@ function Home() {
   // Search Filtered
   const [keyword, setKeyword] = useState("");
   const [launchpadId, setLaunchpadId] = useState("Any");
+  const [minYear, setMinYear] = useState("Any");
+  const [maxYear, setMaxYear] = useState("Any");
+
+  // --------- Store unique value of years --------- //
+  const [yearOptions, setYearOptions] = useState([]);
 
   // Filtered Data
   const [filteredLaunches, setFilteredLaunches] = useState([]);
   const [filteredLaunchpads, setFilteredLaunchpads] = useState([]);
 
   // Filtered Data Count
+  const itemCount = launches.length;
   const [filteredItemCount, setFilteredItemCount] = useState(0);
 
   const [loading, setLoading] = useState(true);
@@ -62,6 +68,21 @@ function Home() {
       const fetchedLaunches = await fetchLaunches();
       const fetchedLaunchpads = await fetchLaunchPads();
 
+      // Extract unique launch years from launches data
+      const uniqueYears = [
+        ...new Set(
+          fetchedLaunches.map((launch) =>
+            new Date(launch.launch_date_local).getFullYear()
+          )
+        ),
+      ];
+      const sortedYears = uniqueYears.sort();
+
+      // Update year options for select inputs
+      setYearOptions(sortedYears);
+      setMinYear("Any");
+      setMaxYear("Any");
+
       setLaunches(fetchedLaunches);
       setLaunchpads(fetchedLaunchpads);
     } catch (error) {
@@ -76,6 +97,8 @@ function Home() {
       launchpads,
       keyword,
       launchpadId,
+      minYear,
+      maxYear,
       setFilteredLaunches,
       setFilteredLaunchpads,
       setFilteredItemCount
@@ -112,16 +135,34 @@ function Home() {
                 {getLaunchpadByName(launchpads)}
               </Select>
             </SearchBar>
-            <SearchBar className="minYear">
+            <SearchBar className="minyear">
               <label htmlFor="min-year">Min Year</label>
-              <Select id="min-year">
+              <Select
+                id="min-year"
+                value={minYear}
+                onChange={(event) => setMinYear(event.target.value)}
+              >
                 <option value="Any">Any</option>
+                {yearOptions.map((year) => (
+                  <option key={year} value={year.toString()}>
+                    {year}
+                  </option>
+                ))}
               </Select>
             </SearchBar>
-            <SearchBar className="maxYear">
+            <SearchBar className="maxyear">
               <label htmlFor="max-year">Max Year</label>
-              <Select id="max-year">
+              <Select
+                id="max-year"
+                value={maxYear}
+                onChange={(event) => setMaxYear(event.target.value)}
+              >
                 <option value="Any">Any</option>
+                {yearOptions.map((year) => (
+                  <option key={year} value={year.toString()}>
+                    {year}
+                  </option>
+                ))}
               </Select>
             </SearchBar>
             <SearchButton onClick={handleSearch}>Apply</SearchButton>
@@ -130,14 +171,27 @@ function Home() {
             {loading && <p>Loading Missions...</p>}
             {!loading && (
               <div>
-                <p>Showing {filteredItemCount} Missions</p>
+                <p>
+                  Showing{" "}
+                  {keyword !== "" ||
+                  launchpadId !== "Any" ||
+                  minYear !== "Any" ||
+                  maxYear !== "Any" ? filteredItemCount
+                    : itemCount}{" "}
+                  Missions
+                </p>
                 <ul>
-                  {
+                  {keyword !== "" ||
+                  launchpadId !== "Any" ||
+                  minYear !== "Any" ||
+                  maxYear !== "Any" ? (
                     <GetLaunches
                       launches={filteredLaunches}
                       launchpads={filteredLaunchpads}
                     />
-                  }
+                  ) : (
+                    <GetLaunches launches={launches} launchpads={launchpads} />
+                  )}
                 </ul>
               </div>
             )}
